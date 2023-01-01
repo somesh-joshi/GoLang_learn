@@ -7,8 +7,8 @@ import (
 
 type course struct {
 	Name  string
-	price int32
-	tags  []string
+	Price int32
+	Tags  []string
 }
 
 func main() {
@@ -17,9 +17,9 @@ func main() {
 
 func EncodeJson() {
 	loc := []course{
-		{Name: "Go", price: 100, tags: []string{"Go", "Golang"}},
-		{Name: "Python", price: 200, tags: []string{"Python", "Python3"}},
-		{Name: "Java", price: 300, tags: nil},
+		{Name: "Go", Price: 100, Tags: []string{"beginner", "intermediate"}},
+		{Name: "Python", Price: 200, Tags: []string{"beginner", "intermediate"}},
+		{Name: "Java", Price: 300, Tags: nil},
 	}
 
 	finalJson, err := json.MarshalIndent(loc, "", "\t")

@@ -23,7 +23,7 @@ type Person struct {
 	Status bool
 }
 
-func (p *Person) greet() { // U can use pointer or value
+func (p *Person) greet() { // U can use pointer or value to ref the struct
 	fmt.Println("Hello", p.Name)
 }
 
