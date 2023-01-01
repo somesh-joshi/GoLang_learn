@@ -12,7 +12,7 @@ func main() {
 		Email: "abc@gmail.com",
 		Status: true,
 	}
-
+ 
 	fmt.Println(somesh)
 	fmt.Println(somesh.Name)
 }

@@ -23,7 +23,7 @@ type Person struct {
 	Status bool
 }
 
-func (p Person) greet() {
+func (p *Person) greet() { // U can use pointer or value
 	fmt.Println("Hello", p.Name)
 }
 
