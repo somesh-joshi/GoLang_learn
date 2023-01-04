@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	
+
 	var fruitarray = []string{"apple", "grape", "banana", "melon"}
 	fmt.Printf("%T\n", fruitarray) // []string
 
@@ -24,7 +24,7 @@ func main() {
 
 	HighScore = append(HighScore, 500, 600, 700, 800)
 
-	fmt.Println(HighScore) 
+	fmt.Println(HighScore)
 
 	sort.Ints(HighScore)
 	fmt.Println(HighScore)
