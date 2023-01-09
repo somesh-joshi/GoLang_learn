@@ -11,7 +11,7 @@ func myfun(mychnl chan string) {
 	for v := 0; v < i; v++ {
 		mychnl <- "some data"
 	}
-	close(mychnl)
+	defer close(mychnl)
 }
 
 func main() {
