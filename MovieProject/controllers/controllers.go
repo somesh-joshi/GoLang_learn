@@ -13,7 +13,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-const collection = db.Collection_watchlist //error handling
+var collection = db.Collection_watchlist
 
 func insertOneMovie(movie movies.Movie) {
 	inserted, err := collection.InsertOne(context.Background(), movie)
