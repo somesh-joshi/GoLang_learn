@@ -1,4 +1,4 @@
-package actor
+package actors
 
 import (
 	"go.mongodb.org/mongo-driver/bson/primitive"

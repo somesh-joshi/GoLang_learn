@@ -1,4 +1,4 @@
-package movie
+package movies
 
 import (
 	"go.mongodb.org/mongo-driver/bson/primitive"

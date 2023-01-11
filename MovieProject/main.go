@@ -1,7 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/somesh-joshi/MovieProject/db"
+)
 
 func main() {
-	fmt.Println("Hello, World!")
+	fmt.Println(db.Collection_watchlist)
 }
