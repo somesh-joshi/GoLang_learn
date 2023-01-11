@@ -1,4 +1,4 @@
-package controllers
+package directorscontrollers
 
 import (
 	"context"
@@ -8,15 +8,16 @@ import (
 	"net/http"
 
 	"github.com/somesh-joshi/MovieProject/db"
-	"github.com/somesh-joshi/MovieProject/models/movies"
+	"github.com/somesh-joshi/MovieProject/models/directors"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-var collection = db.Collection_watchlist
+var collection = db.Collection_directors
 
-func insertOneMovie(movie movies.Movie) {
-	inserted, err := collection.InsertOne(context.Background(), movie)
+func insertOneMovie(director directors.Director) {
+	fmt.Println(director)
+	inserted, err := collection.InsertOne(context.Background(), director)
 
 	if err != nil {
 		log.Fatal(err)
@@ -30,19 +31,19 @@ func getAllMovies() []primitive.M {
 		log.Fatal(err)
 	}
 
-	var movies []primitive.M
+	var directors []primitive.M
 
 	for cur.Next(context.Background()) {
-		var movie bson.M
-		err := cur.Decode(&movie)
+		var director bson.M
+		err := cur.Decode(&director)
 		if err != nil {
 			log.Fatal(err)
 		}
-		movies = append(movies, movie)
+		directors = append(directors, director)
 	}
 
 	defer cur.Close(context.Background())
-	return movies
+	return directors
 }
 
 func GetMyAllMovies(w http.ResponseWriter, r *http.Request) {
@@ -55,9 +56,9 @@ func CreateMovie(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/x-www-form-urlencode")
 	w.Header().Set("Allow-Control-Allow-Methods", "POST")
 
-	var movie movies.Movie
-	_ = json.NewDecoder(r.Body).Decode(&movie)
-	insertOneMovie(movie)
-	json.NewEncoder(w).Encode(movie)
+	var director directors.Director
+	_ = json.NewDecoder(r.Body).Decode(&director)
+	insertOneMovie(director)
+	json.NewEncoder(w).Encode(director)
 
 }
