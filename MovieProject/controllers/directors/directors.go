@@ -11,11 +11,12 @@ import (
 	"github.com/somesh-joshi/MovieProject/models/directors"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
-var collection = db.Collection_directors
+var collection = db.Db.Collection("directors")
 
-func insertOneMovie(director directors.Director) {
+func insertOneMovie(director directors.Director) (id *mongo.InsertOneResult) {
 	fmt.Println(director)
 	inserted, err := collection.InsertOne(context.Background(), director)
 
@@ -23,6 +24,7 @@ func insertOneMovie(director directors.Director) {
 		log.Fatal(err)
 	}
 	fmt.Println("Inserted 1 movie in db with id: ", inserted.InsertedID)
+	return inserted
 }
 
 func getAllMovies() []primitive.M {
@@ -57,8 +59,7 @@ func CreateMovie(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Allow-Control-Allow-Methods", "POST")
 
 	var director directors.Director
-	_ = json.NewDecoder(r.Body).Decode(&director)
-	insertOneMovie(director)
-	json.NewEncoder(w).Encode(director)
+	inserted := insertOneMovie(director)
+	json.NewEncoder(w).Encode(inserted.InsertedID)
 
 }

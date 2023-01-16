@@ -11,18 +11,25 @@ import (
 	"github.com/somesh-joshi/MovieProject/models/movies"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
-var collection = db.Collection_watchlist
+var collection = db.Db.Collection("watchlist")
 
-func insertOneMovie(movie movies.Movie) {
+//var collection_actor = db.Collection_actors
+//var collection_director = db.Collection_directors
+
+func insertOneMovie(movie movies.Movie) (id *mongo.InsertOneResult) {
 	inserted, err := collection.InsertOne(context.Background(), movie)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println("Inserted 1 movie in db with id: ", inserted.InsertedID)
+	return inserted
 }
+
+//get actor name from actor id
 
 func getAllMovies() []primitive.M {
 	cur, err := collection.Find(context.Background(), bson.D{{}})
@@ -56,8 +63,7 @@ func CreateMovie(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Allow-Control-Allow-Methods", "POST")
 
 	var movie movies.Movie
-	_ = json.NewDecoder(r.Body).Decode(&movie)
-	insertOneMovie(movie)
-	json.NewEncoder(w).Encode(movie)
+	inserted := insertOneMovie(movie)
+	json.NewEncoder(w).Encode(inserted.InsertedID)
 
 }

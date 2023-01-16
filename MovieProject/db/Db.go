@@ -11,13 +11,8 @@ import (
 const connectionString = "mongodb://127.0.0.1:27017"
 
 const dbName = "netflix"
-const colName1 = "watchlist"
-const colName2 = "actors"
-const colName3 = "directors"
 
-var Collection_watchlist *mongo.Collection
-var Collection_actors *mongo.Collection
-var Collection_directors *mongo.Collection
+var Db *mongo.Database
 
 // MOST IMPORTANT
 
@@ -32,8 +27,7 @@ func init() {
 		log.Fatal(err)
 	}
 	log.Println("Connected to MongoDB!")
-	Collection_watchlist = client.Database(dbName).Collection(colName1)
-	Collection_actors = client.Database(dbName).Collection(colName2)
-	Collection_directors = client.Database(dbName).Collection(colName3)
+
+	Db = client.Database(dbName)
 
 }

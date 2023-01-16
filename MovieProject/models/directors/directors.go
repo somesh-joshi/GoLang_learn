@@ -5,7 +5,7 @@ import (
 )
 
 type Director struct {
-	ID   primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
+	ID   primitive.ObjectID `json:"_id,omitempty" bson:"_id"`
 	Name string             `json:"name,omitempty"`
 	Age  int                `json:"age,omitempty"`
 }
