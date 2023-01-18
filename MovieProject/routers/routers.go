@@ -18,7 +18,7 @@ func Router() *mux.Router {
 	routers.HandleFunc("/actors/dob/{dob}", actorscontrollers.FindByDoB).Methods("GET")
 	routers.HandleFunc("/directors", directorscontrollers.GetMyAllMovies).Methods("GET")
 	routers.HandleFunc("/directors", directorscontrollers.CreateMovie).Methods("POST")
-	routers.HandleFunc("/directors/{id}", directorscontrollers.FindById).Methods("GET")
-	routers.HandleFunc("/directors/{dob}", directorscontrollers.FindByDoB).Methods("GET")
+	routers.HandleFunc("/directors/id/{id}", directorscontrollers.FindById).Methods("GET")
+	routers.HandleFunc("/directors/dob/{dob}", directorscontrollers.FindByDoB).Methods("GET")
 	return routers
 }
