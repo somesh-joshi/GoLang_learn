@@ -11,6 +11,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/somesh-joshi/MovieProject/db"
 	"github.com/somesh-joshi/MovieProject/models/actors"
+	"github.com/somesh-joshi/MovieProject/validator"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -101,7 +102,12 @@ func CreateMovie(w http.ResponseWriter, r *http.Request) {
 
 	var actor actors.Actor
 	_ = json.NewDecoder(r.Body).Decode(&actor)
-	inserted := insertOneMovie(actor)
-	json.NewEncoder(w).Encode(inserted.InsertedID)
-
+	err := validator.Validator(actor)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(err.Error())
+	} else {
+		inserted := insertOneMovie(actor)
+		json.NewEncoder(w).Encode(inserted.InsertedID)
+	}
 }

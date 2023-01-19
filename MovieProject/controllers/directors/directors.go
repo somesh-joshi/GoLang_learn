@@ -11,6 +11,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/somesh-joshi/MovieProject/db"
 	"github.com/somesh-joshi/MovieProject/models/directors"
+	"github.com/somesh-joshi/MovieProject/validator"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -20,7 +21,6 @@ import (
 var collection = db.Db.Collection("directors")
 
 func insertOneMovie(director directors.Director) (id *mongo.InsertOneResult) {
-	fmt.Println(director)
 	inserted, err := collection.InsertOne(context.Background(), director)
 	if err != nil {
 		log.Fatal(err)
@@ -101,7 +101,12 @@ func CreateMovie(w http.ResponseWriter, r *http.Request) {
 
 	var director directors.Director
 	_ = json.NewDecoder(r.Body).Decode(&director)
-	inserted := insertOneMovie(director)
-	json.NewEncoder(w).Encode(inserted.InsertedID)
-
+	err := validator.Validator(director)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(err.Error())
+	} else {
+		inserted := insertOneMovie(director)
+		json.NewEncoder(w).Encode(inserted.InsertedID)
+	}
 }
