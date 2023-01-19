@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/gorilla/mux"
 	"github.com/somesh-joshi/MovieProject/db"
@@ -13,6 +14,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 var collection = db.Db.Collection("actors")
@@ -27,8 +29,8 @@ func insertOneMovie(actor actors.Actor) (id *mongo.InsertOneResult) {
 	return inserted
 }
 
-func getAllMovies() []primitive.M {
-	cur, err := collection.Find(context.Background(), bson.D{{}})
+func getAllMovies(filter primitive.D, option *options.FindOptions) []primitive.M {
+	cur, err := collection.Find(context.Background(), filter, option)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -50,6 +52,7 @@ func getAllMovies() []primitive.M {
 
 func findById(id string) (d primitive.M) {
 	objID, _ := primitive.ObjectIDFromHex(id)
+	fmt.Println(objID)
 	filter := bson.M{"_id": objID}
 	var data actors.Actor
 	err := collection.FindOne(context.Background(), filter).Decode(&data)
@@ -58,25 +61,6 @@ func findById(id string) (d primitive.M) {
 	}
 	d = bson.M{"_id": data.ID, "name": data.Name, "age": data.Age, "dob": data.DoB}
 	return d
-}
-
-func findBydob(dob string) (d primitive.M) {
-	filter := bson.M{"dob": dob}
-	var data actors.Actor
-	err := collection.FindOne(context.Background(), filter).Decode(&data)
-	if err != nil {
-		log.Fatal(err)
-	}
-	d = bson.M{"_id": data.ID, "name": data.Name, "age": data.Age, "dob": data.DoB}
-	return d
-}
-
-func FindByDoB(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/x-www-form-urlencode")
-	params := mux.Vars(r)
-	dob := params["dob"]
-	actor := findBydob(dob)
-	json.NewEncoder(w).Encode(actor)
 }
 
 func FindById(w http.ResponseWriter, r *http.Request) {
@@ -89,7 +73,25 @@ func FindById(w http.ResponseWriter, r *http.Request) {
 
 func GetMyAllMovies(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/x-www-form-urlencode")
-	allMovies := getAllMovies()
+	params := r.URL.Query()
+	var option *options.FindOptions
+	filter := bson.D{}
+	list := bson.D{}
+	if params["dob"] != nil {
+		filter = append(filter, bson.E{Key: "dob", Value: params["dob"][0]})
+	}
+	if params["age"] != nil {
+		age, _ := strconv.Atoi(params["age"][0])
+		filter = append(filter, bson.E{Key: "age", Value: age})
+	}
+	if params["name"] != nil {
+		filter = append(filter, bson.E{Key: "name", Value: params["name"][0]})
+	}
+	if params["sort"] != nil {
+		list = append(list, bson.E{Key: params["sort"][0], Value: 1})
+	}
+	option = options.Find().SetSort(list)
+	allMovies := getAllMovies(filter, option)
 	json.NewEncoder(w).Encode(allMovies)
 }
 

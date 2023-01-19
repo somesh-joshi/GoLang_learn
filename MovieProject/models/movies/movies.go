@@ -10,6 +10,6 @@ type Movie struct {
 	Watched   bool                 `json:"watched,omitempty"`
 	Actors_id []primitive.ObjectID `json:"actors_id,omitempty"`
 	Director  primitive.ObjectID   `json:"director,omitempty"`
-	Rating    int                  `json:"rating,omitempty"`  
+	Rating    int                  `json:"rating,omitempty"`
 	
 }
