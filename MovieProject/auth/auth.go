@@ -45,7 +45,7 @@ func Logup(w http.ResponseWriter, r *http.Request) {
 	_ = json.NewDecoder(r.Body).Decode(&Card)
 	if Card.Username == "" || Card.Password == "" {
 		w.WriteHeader(http.StatusBadRequest)
-		return
+		w.Write([]byte(`Missing username and password`))
 	} else {
 		inserted, err := insertuser(Card)
 		if err != nil {
