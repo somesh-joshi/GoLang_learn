@@ -110,7 +110,7 @@ func CreateMovie(w http.ResponseWriter, r *http.Request) {
 	err := validator.Validator(movie)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(err.Error())
+		w.Write([]byte(err.Error()))
 	} else {
 		inserted := insertOneMovie(movie)
 		json.NewEncoder(w).Encode(inserted.InsertedID)
