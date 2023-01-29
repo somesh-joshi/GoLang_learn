@@ -3,21 +3,24 @@ package db
 import (
 	"context"
 	"log"
+	"os"
 
+	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
-
-const connectionString = "mongodb://127.0.0.1:27017"
-
-const dbName = "netflix"
 
 var Db *mongo.Database
 
 // MOST IMPORTANT
 
 func init() {
-	clientOptions := options.Client().ApplyURI(connectionString)
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	clientOptions := options.Client().ApplyURI(os.Getenv("MONGOSTRING"))
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
 		log.Fatal(err)
@@ -28,6 +31,6 @@ func init() {
 	}
 	log.Println("Connected to MongoDB!")
 
-	Db = client.Database(dbName)
+	Db = client.Database(os.Getenv("DBNAME"))
 
 }
