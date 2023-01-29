@@ -1,11 +1,16 @@
 package auth
 
-import "github.com/golang-jwt/jwt/v4"
+import (
+	"time"
+
+	"github.com/golang-jwt/jwt/v4"
+)
 
 func getToken(id interface{}) (string, error) {
 	signingKey := []byte("keymaker")
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"id": id,
+		"exp": time.Now().Add(time.Minute * 720).Unix(),
 	})
 	tokenString, err := token.SignedString(signingKey)
 	return tokenString, err

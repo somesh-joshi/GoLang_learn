@@ -79,7 +79,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 			err := bcrypt.CompareHashAndPassword([]byte(data.Password), []byte(Card.Password))
 			if err != nil {
 				w.WriteHeader(http.StatusUnauthorized)
-				w.Write([]byte(`"Wrong password"`))
+				w.Write([]byte(`Wrong passwords`))
 			} else {
 				id := data.ID
 				token, _ := getToken(id)
