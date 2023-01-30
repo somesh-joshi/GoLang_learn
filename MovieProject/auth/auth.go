@@ -84,7 +84,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 			} else {
 				id := data.ID
 				token, _ := getToken(id)
-				json.NewEncoder(w).Encode(token)
+				w.Write([]byte(token))
 			}
 		}
 	}
