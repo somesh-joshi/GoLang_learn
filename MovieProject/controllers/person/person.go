@@ -68,7 +68,7 @@ func FindByIdActor(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id := params["id"]
 	objID, _ := primitive.ObjectIDFromHex(id)
-	filter := bson.D{bson.E{Key: "title", Value: "actor"}, bson.E{Key: "_id", Value: objID}}
+	filter := bson.D{{Key: "title", Value: "actor"},{Key: "_id", Value: objID}}
 	actor := findById(filter)
 	json.NewEncoder(w).Encode(actor)
 }
@@ -78,7 +78,7 @@ func FindByIdDirector(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id := params["id"]
 	objID, _ := primitive.ObjectIDFromHex(id)
-	filter := bson.D{bson.E{Key: "title", Value: "director"}, bson.E{Key: "_id", Value: objID}}
+	filter := bson.D{{Key: "title", Value: "director"},{Key: "_id", Value: objID}}
 	actor := findById(filter)
 	json.NewEncoder(w).Encode(actor)
 }

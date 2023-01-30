@@ -59,7 +59,7 @@ func Logup(w http.ResponseWriter, r *http.Request) {
 				w.WriteHeader(http.StatusInternalServerError)
 				w.Write([]byte(`Error in create token, Please login`))
 			} else {
-				json.NewEncoder(w).Encode(token)
+				w.Write([]byte(token))
 			}
 		}
 	}
