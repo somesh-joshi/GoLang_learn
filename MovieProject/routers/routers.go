@@ -14,6 +14,7 @@ func Router() *mux.Router {
 	routers := mux.NewRouter()
 	routers.HandleFunc("/signup", auth.Logup).Methods("POST")
 	routers.HandleFunc("/signin", auth.Login).Methods("POST")
+	routers.HandleFunc("/mail", auth.Mail).Methods("GET")
 	routers.Handle("/actors", auth.AuthMiddleware(http.HandlerFunc(personcontrollers.GetAllActor))).Methods("GET")
 	routers.Handle("/movies", auth.AuthMiddleware(http.HandlerFunc(moviescontrollers.GetMyAllMovies))).Methods("GET")
 	routers.Handle("/movies", auth.AuthMiddleware(http.HandlerFunc(moviescontrollers.CreateMovie))).Methods("POST")

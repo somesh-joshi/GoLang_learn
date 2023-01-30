@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
+	"net/smtp"
 	"strings"
 
 	"github.com/golang-jwt/jwt/v4"
@@ -109,4 +110,33 @@ func AuthMiddleware(next http.Handler) http.Handler {
 		r.Header.Set("id", name)
 		next.ServeHTTP(w, r)
 	})
+}
+
+func Mail(w http.ResponseWriter, r *http.Request) {
+	// Sender data.
+	from := "example@gmail.com"
+	password := "<yourpassword>"
+
+	// Receiver email address.
+	to := []string{
+		"example@gmail.com",
+	}
+
+	// smtp server configuration.
+	smtpHost := "smtp.gmail.com"
+	smtpPort := "587"
+
+	// Message.
+	message := []byte("This is a test email message.")
+
+	// Authentication.
+	auth := smtp.PlainAuth("", from, password, smtpHost)
+
+	// Sending email.
+	err := smtp.SendMail(smtpHost+":"+smtpPort, auth, from, to, message)
+	if err != nil {
+		w.Write([]byte(err.Error()))
+		return
+	}
+	w.Write([]byte(`Email Sent Successfully!`))
 }
