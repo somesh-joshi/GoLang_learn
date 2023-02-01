@@ -26,14 +26,14 @@ func Router() *mux.Router {
 
 	routers.Handle("/actors", auth.AuthMiddleware(http.HandlerFunc(personcontrollers.GetAllActor))).Methods("GET")
 	routers.Handle("/actors", auth.AuthMiddleware(http.HandlerFunc(personcontrollers.CreateActor))).Methods("POST")
-	routers.Handle("/actors/{id}", auth.AuthMiddleware(http.HandlerFunc(personcontrollers.UpdatePerson))).Methods("PUT")
+	routers.Handle("/actors/{id}", auth.AuthMiddleware(http.HandlerFunc(personcontrollers.UpdateActor))).Methods("PUT")
 	routers.Handle("/actors/{id}", auth.AuthMiddleware(http.HandlerFunc(personcontrollers.DeletePerson))).Methods("DELETE")
 	routers.Handle("/actors/{id}", auth.AuthMiddleware(http.HandlerFunc(personcontrollers.FindByIdActor))).Methods("GET")
 
 	routers.Handle("/directors", auth.AuthMiddleware(http.HandlerFunc(personcontrollers.GetAllDirector))).Methods("GET")
 	routers.Handle("/directors", auth.AuthMiddleware(http.HandlerFunc(personcontrollers.CreateDirector))).Methods("POST")
 	routers.Handle("/directors/{id}", auth.AuthMiddleware(http.HandlerFunc(personcontrollers.FindByIdDirector))).Methods("GET")
-	routers.Handle("/directors/{id}", auth.AuthMiddleware(http.HandlerFunc(personcontrollers.UpdatePerson))).Methods("PUT")
+	routers.Handle("/directors/{id}", auth.AuthMiddleware(http.HandlerFunc(personcontrollers.UpdateDiractor))).Methods("PUT")
 	routers.Handle("/directors/{id}", auth.AuthMiddleware(http.HandlerFunc(personcontrollers.DeletePerson))).Methods("DELETE")
 
 	return routers

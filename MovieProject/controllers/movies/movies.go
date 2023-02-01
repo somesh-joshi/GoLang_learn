@@ -35,7 +35,6 @@ func updateMovie(filter primitive.D, update primitive.D) (id *mongo.UpdateResult
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("Updated 1 movie in db with id: ", updated.UpsertedID)
 	return updated
 }
 
@@ -143,7 +142,7 @@ func UpdateMovie(w http.ResponseWriter, r *http.Request) {
 		filter := bson.D{{Key: "_id", Value: objID}}
 		update := bson.D{{Key: "$set", Value: movie}}
 		updated := updateMovie(filter, update)
-		json.NewEncoder(w).Encode(updated.UpsertedID)
+		json.NewEncoder(w).Encode(updated.ModifiedCount)
 	}
 }
 
@@ -172,5 +171,5 @@ func Moviewatch(w http.ResponseWriter, r *http.Request) {
 	filter := bson.D{{Key: "_id", Value: actor["_id"]}}
 	update := bson.D{{Key: "$set", Value: bson.D{{Key: "watched", Value: !actor["watched"].(bool)}}}}
 	updated := updateMovie(filter, update)
-	json.NewEncoder(w).Encode(updated.UpsertedID)
+	json.NewEncoder(w).Encode(updated)
 }

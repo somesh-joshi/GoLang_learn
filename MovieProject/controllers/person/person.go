@@ -174,12 +174,13 @@ func CreateDirector(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func UpdatePerson(w http.ResponseWriter, r *http.Request) {
+func UpdateActor(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/x-www-form-urlencode")
 	w.Header().Set("Allow-Control-Allow-Methods", "PUT")
 
 	var movie person.Person
 	_ = json.NewDecoder(r.Body).Decode(&movie)
+	movie.Title = "actor"
 	err := validator.Validator(movie)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
@@ -191,7 +192,29 @@ func UpdatePerson(w http.ResponseWriter, r *http.Request) {
 		filter := bson.D{{Key: "_id", Value: objID}}
 		update := bson.D{{Key: "$set", Value: movie}}
 		updated := updatePerson(filter, update)
-		json.NewEncoder(w).Encode(updated.UpsertedID)
+		json.NewEncoder(w).Encode(updated.ModifiedCount)
+	}
+}
+
+func UpdateDiractor(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/x-www-form-urlencode")
+	w.Header().Set("Allow-Control-Allow-Methods", "PUT")
+
+	var movie person.Person
+	_ = json.NewDecoder(r.Body).Decode(&movie)
+	movie.Title = "director"
+	err := validator.Validator(movie)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte(err.Error()))
+	} else {
+		params := mux.Vars(r)
+		id := params["id"]
+		objID, _ := primitive.ObjectIDFromHex(id)
+		filter := bson.D{{Key: "_id", Value: objID}}
+		update := bson.D{{Key: "$set", Value: movie}}
+		updated := updatePerson(filter, update)
+		json.NewEncoder(w).Encode(updated.ModifiedCount)
 	}
 }
 
