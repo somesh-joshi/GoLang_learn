@@ -30,6 +30,15 @@ func insertOneMovie(person person.Person) (id *mongo.InsertOneResult) {
 	return inserted
 }
 
+func updatePerson(filter primitive.D, update primitive.D) (id *mongo.UpdateResult) {
+	updated, err := collection.UpdateOne(context.Background(), filter, update)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("Updated 1 movie in db with id: ", updated.UpsertedID)
+	return updated
+}
+
 func getAllMovies(filter primitive.D, option *options.FindOptions) []primitive.M {
 	cur, err := collection.Find(context.Background(), filter, option)
 	if err != nil {
@@ -68,7 +77,7 @@ func FindByIdActor(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id := params["id"]
 	objID, _ := primitive.ObjectIDFromHex(id)
-	filter := bson.D{{Key: "title", Value: "actor"},{Key: "_id", Value: objID}}
+	filter := bson.D{{Key: "title", Value: "actor"}, {Key: "_id", Value: objID}}
 	actor := findById(filter)
 	json.NewEncoder(w).Encode(actor)
 }
@@ -78,7 +87,7 @@ func FindByIdDirector(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id := params["id"]
 	objID, _ := primitive.ObjectIDFromHex(id)
-	filter := bson.D{{Key: "title", Value: "director"},{Key: "_id", Value: objID}}
+	filter := bson.D{{Key: "title", Value: "director"}, {Key: "_id", Value: objID}}
 	actor := findById(filter)
 	json.NewEncoder(w).Encode(actor)
 }
@@ -163,4 +172,40 @@ func CreateDirector(w http.ResponseWriter, r *http.Request) {
 		inserted := insertOneMovie(actor)
 		json.NewEncoder(w).Encode(inserted.InsertedID)
 	}
+}
+
+func UpdatePerson(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/x-www-form-urlencode")
+	w.Header().Set("Allow-Control-Allow-Methods", "PUT")
+
+	var movie person.Person
+	_ = json.NewDecoder(r.Body).Decode(&movie)
+	err := validator.Validator(movie)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte(err.Error()))
+	} else {
+		params := mux.Vars(r)
+		id := params["id"]
+		objID, _ := primitive.ObjectIDFromHex(id)
+		filter := bson.D{{Key: "_id", Value: objID}}
+		update := bson.D{{Key: "$set", Value: movie}}
+		updated := updatePerson(filter, update)
+		json.NewEncoder(w).Encode(updated.UpsertedID)
+	}
+}
+
+func DeletePerson(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/x-www-form-urlencode")
+	w.Header().Set("Allow-Control-Allow-Methods", "DELETE")
+
+	params := mux.Vars(r)
+	id := params["id"]
+	objID, _ := primitive.ObjectIDFromHex(id)
+	filter := bson.D{{Key: "_id", Value: objID}}
+	_, err := collection.DeleteOne(context.Background(), filter)
+	if err != nil {
+		log.Fatal(err)
+	}
+	json.NewEncoder(w).Encode("Deleted")
 }

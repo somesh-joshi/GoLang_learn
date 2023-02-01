@@ -15,15 +15,26 @@ func Router() *mux.Router {
 	routers.HandleFunc("/signup", auth.Logup).Methods("POST")
 	routers.HandleFunc("/signin", auth.Login).Methods("POST")
 	routers.HandleFunc("/mail", auth.Mail).Methods("GET")
+
 	routers.Handle("/actors", auth.AuthMiddleware(http.HandlerFunc(personcontrollers.GetAllActor))).Methods("GET")
 	routers.Handle("/movies", auth.AuthMiddleware(http.HandlerFunc(moviescontrollers.GetMyAllMovies))).Methods("GET")
 	routers.Handle("/movies", auth.AuthMiddleware(http.HandlerFunc(moviescontrollers.CreateMovie))).Methods("POST")
 	routers.Handle("/movies/{id}", auth.AuthMiddleware(http.HandlerFunc(moviescontrollers.FindById))).Methods("GET")
+	routers.Handle("/movies/{id}", auth.AuthMiddleware(http.HandlerFunc(moviescontrollers.UpdateMovie))).Methods("PUT")
+	routers.Handle("/movies/{id}", auth.AuthMiddleware(http.HandlerFunc(moviescontrollers.DeleteMovie))).Methods("DELETE")
+	routers.Handle("/movies/{id}", auth.AuthMiddleware(http.HandlerFunc(moviescontrollers.Moviewatch))).Methods("GET")
+
 	routers.Handle("/actors", auth.AuthMiddleware(http.HandlerFunc(personcontrollers.GetAllActor))).Methods("GET")
 	routers.Handle("/actors", auth.AuthMiddleware(http.HandlerFunc(personcontrollers.CreateActor))).Methods("POST")
+	routers.Handle("/actors/{id}", auth.AuthMiddleware(http.HandlerFunc(personcontrollers.UpdatePerson))).Methods("PUT")
+	routers.Handle("/actors/{id}", auth.AuthMiddleware(http.HandlerFunc(personcontrollers.DeletePerson))).Methods("DELETE")
 	routers.Handle("/actors/{id}", auth.AuthMiddleware(http.HandlerFunc(personcontrollers.FindByIdActor))).Methods("GET")
+
 	routers.Handle("/directors", auth.AuthMiddleware(http.HandlerFunc(personcontrollers.GetAllDirector))).Methods("GET")
 	routers.Handle("/directors", auth.AuthMiddleware(http.HandlerFunc(personcontrollers.CreateDirector))).Methods("POST")
 	routers.Handle("/directors/{id}", auth.AuthMiddleware(http.HandlerFunc(personcontrollers.FindByIdDirector))).Methods("GET")
+	routers.Handle("/directors/{id}", auth.AuthMiddleware(http.HandlerFunc(personcontrollers.UpdatePerson))).Methods("PUT")
+	routers.Handle("/directors/{id}", auth.AuthMiddleware(http.HandlerFunc(personcontrollers.DeletePerson))).Methods("DELETE")
+
 	return routers
 }

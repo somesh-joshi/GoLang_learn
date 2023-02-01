@@ -1,0 +1,406 @@
+{
+	"info": {
+		"_postman_id": "23451666-6e0c-41f5-8c3c-38e840143e57",
+		"name": "Movie",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "21018580"
+	},
+	"item": [
+		{
+			"name": "Movie Signup",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.unset(\"Token\");\r",
+							"pm.collectionVariables.set(\"Token\", pm.response.text());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"somesh\",\r\n  \"password\": \"somesh\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{host}}:4000/signup"
+			},
+			"response": []
+		},
+		{
+			"name": "Movie Signin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.unset(\"Token\");\r",
+							"pm.collectionVariables.set(\"Token\", pm.response.text());\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"somesh\",\r\n  \"password\": \"somesh\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{host}}:4000/signin"
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Actors",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"url": "{{host}}:4000/actors"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Actors By Id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"url": "{{host}}:4000/actors/63d1006190f591c6a848963b"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Actors By Query",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{host}}:4000/actors?sort=name",
+					"host": [
+						"{{host}}"
+					],
+					"port": "4000",
+					"path": [
+						"actors"
+					],
+					"query": [
+						{
+							"key": "dob",
+							"value": "1-19-2023",
+							"disabled": true
+						},
+						{
+							"key": "sort",
+							"value": "name"
+						},
+						{
+							"key": "name",
+							"value": "somesh",
+							"disabled": true
+						},
+						{
+							"key": "age",
+							"value": "89",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Movies",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"url": "{{host}}:4000/movies"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Movie By Id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"url": "{{host}}:4000/movies/63c79a6c4ddd39d2dee26fdc"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Movie By Query",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": ":4000/movies?sort=rating",
+					"port": "4000",
+					"path": [
+						"movies"
+					],
+					"query": [
+						{
+							"key": "actors_id",
+							"value": "[63c792faae35a7fe9741197]",
+							"disabled": true
+						},
+						{
+							"key": "director",
+							"value": "63c799824ddd39d2dee26fd9",
+							"disabled": true
+						},
+						{
+							"key": "rating",
+							"value": "8",
+							"disabled": true
+						},
+						{
+							"key": "movie",
+							"value": "ye hj",
+							"disabled": true
+						},
+						{
+							"key": "sort",
+							"value": "rating"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Directors",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"url": "{{host}}:4000/directors"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Director By Id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"url": "{{host}}:4000/directors/63d7b32b558a3f01e21cecbc"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Directors By Query",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{host}}:4000/directors?name=dcfdec",
+					"host": [
+						"{{host}}"
+					],
+					"port": "4000",
+					"path": [
+						"directors"
+					],
+					"query": [
+						{
+							"key": "dob",
+							"value": "1-18-2023",
+							"disabled": true
+						},
+						{
+							"key": "sort",
+							"value": "age",
+							"disabled": true
+						},
+						{
+							"key": "age",
+							"value": "89",
+							"disabled": true
+						},
+						{
+							"key": "name",
+							"value": "dcfdec"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Directors",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"mnb\",\r\n  \"age\": 24,\r\n  \"dob\": \"2023-02-17\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{host}}:4000/directors"
+			},
+			"response": []
+		},
+		{
+			"name": "Add Actors",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"mnb\",\r\n  \"age\": 24,\r\n  \"dob\": \"2023-02-17\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{host}}:4000/actors"
+			},
+			"response": []
+		},
+		{
+			"name": "Add Movies",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"movie\": \"ha ji\",\r\n  \"watched\": false,\r\n  \"actors_id\": [\"63c792faae35a7fe97411979\"],\r\n  \"director\": \"63c799824ddd39d2dee26fd9\",\r\n  \"rating\": 4\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{host}}:4000/movies"
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": {}
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "localhost",
+			"type": "string"
+		},
+		{
+			"key": "Token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
