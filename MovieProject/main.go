@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io/ioutil"
+	"os"
 	"strconv"
 	"strings"
 
@@ -34,7 +35,14 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	
+	file, _ := os.Create("fileID.txt")
+
 	for _, v := range result.InsertedIDs {
-		fmt.Println(v)
+		file.WriteString(fmt.Sprintf("%v\n", v))
 	}
+	
+	fmt.Println("File Created Successfully", file.Name())
+
+	defer file.Close()
 }
